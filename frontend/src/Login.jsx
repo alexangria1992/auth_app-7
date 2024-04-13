@@ -9,7 +9,7 @@ const Login = () => {
   });
 
   const navigate = useNavigate();
-
+  axios.defaults.withCredentials = true;
   const handleSubmit = (event) => {
     event.preventDefault();
     axios
@@ -18,7 +18,7 @@ const Login = () => {
         if (res.data.Status === "Success") {
           navigate("/");
         } else {
-          alert("Error");
+          alert(res.data.Error);
         }
       })
       .then((err) => console.log(err));

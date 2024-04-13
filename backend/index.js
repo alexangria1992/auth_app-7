@@ -12,7 +12,13 @@ const app = express();
 
 //Express middleeware
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:5174"],
+    methods: ["POST", "GET"],
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 
 //DB Connection
@@ -84,6 +90,11 @@ app.post("/login", (req, res) => {
             // const token = jwt.sign({ role: "admin" }, "jwt-secret-key", {
             //   expiresIn: "1d",
             // });
+            const name = result[0].name;
+            const token = jwt.sign({ name }, "jwt-secret-key", {
+              expiresIn: "1d",
+            });
+            res.cookie("token", token);
             return res.json({ Status: "Success" });
           } else {
             return res.json({
